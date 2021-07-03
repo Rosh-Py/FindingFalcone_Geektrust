@@ -20,7 +20,9 @@ const globalReducer = (state, action) => {
   if (action.type === "UPDATE_SELECTED_SPACECRAFTS") {
     return { ...state, selectedSpaceCrafts: action.payload };
   }
-
+  if (action.type === "RESET_SELECTIONS") {
+    return { ...state, selectedSpaceCrafts: [], selectedDestinations: [] };
+  }
   throw new Error("Action type not found.");
 };
 

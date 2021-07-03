@@ -1,11 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { useGlobalContext } from "../globalContext";
 
 function Header() {
+  const { resetSelections } = useGlobalContext();
   return (
     <Wrapper>
       <div className="title">Finding Falcone</div>
-      <div className="reset">Reset</div>
+      <div className="reset" onClick={resetSelections}>
+        Reset
+      </div>
     </Wrapper>
   );
 }

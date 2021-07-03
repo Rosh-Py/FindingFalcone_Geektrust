@@ -29,6 +29,10 @@ export const GlobalProvider = ({ children }) => {
   const updateSelectedSpaceCrafts = (newSelection) => {
     dispatch({ type: "UPDATE_SELECTED_SPACECRAFTS", payload: newSelection });
   };
+
+  const resetSelections = () => {
+    dispatch({ type: "RESET_SELECTIONS" });
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -37,6 +41,7 @@ export const GlobalProvider = ({ children }) => {
         setAllSpaceCrafts,
         updateSelectedDestinations,
         updateSelectedSpaceCrafts,
+        resetSelections,
       }}
     >
       {children}
