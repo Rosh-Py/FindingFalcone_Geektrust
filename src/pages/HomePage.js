@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Header } from "../components";
+import { Header, SingleSelection } from "../components";
 import axios from "axios";
 import { apiEndpoint } from "../config";
 import { useGlobalContext } from "../globalContext";
 
 function HomePage() {
-  const { setAllSpaceCrafts, setAllDestinations } = useGlobalContext();
+  const {
+    setAllSpaceCrafts,
+    setAllDestinations,
+    totalSelectionOptions,
+    allDestinations,
+    allSpaceCrafts,
+  } = useGlobalContext();
 
   const fetchDetails = async (endpoint) => {
     try {
@@ -26,10 +32,16 @@ function HomePage() {
     }
   };
 
+  const options = new Array(totalSelectionOptions).fill(undefined);
   useEffect(() => fetchDetails(apiEndpoint), []);
   return (
     <Wrapper>
       <Header />
+      <div className="selection-container">
+        {options.map((element, index) => {
+          return <SingleSelection key={index} number={index} />;
+        })}
+      </div>
     </Wrapper>
   );
 }
@@ -40,6 +52,11 @@ const Wrapper = styled.div`
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     center/ cover no-repeat
       url("https://images.pexels.com/photos/2387793/pexels-photo-2387793.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+
+  .selection-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
 `;
 
 export default HomePage;

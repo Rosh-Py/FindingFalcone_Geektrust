@@ -5,6 +5,7 @@ const GlobalContext = React.createContext();
 const initialState = {
   allDestinations: [], //all destinations
   allSpaceCrafts: [], // all space crafts
+  totalSelectionOptions: 4,
   // Note: space crafts and destinations selected will be mapped based on index
   selectedDestinations: [], // selected destinations to search Al falcone
   selectedSpaceCrafts: [], // selected spacecrafts to search Al falcone
@@ -21,9 +22,22 @@ export const GlobalProvider = ({ children }) => {
   const setAllSpaceCrafts = (vehicles) => {
     dispatch({ type: "SET_ALL_SPACECRAFTS", payload: vehicles });
   };
+
+  const updateSelectedDestinations = (newSelection) => {
+    dispatch({ type: "UPDATE_SELECTED_DESTINATIONS", payload: newSelection });
+  };
+  const updateSelectedSpaceCrafts = (newSelection) => {
+    dispatch({ type: "UPDATE_SELECTED_SPACECRAFTS", payload: newSelection });
+  };
   return (
     <GlobalContext.Provider
-      value={{ ...state, setAllDestinations, setAllSpaceCrafts }}
+      value={{
+        ...state,
+        setAllDestinations,
+        setAllSpaceCrafts,
+        updateSelectedDestinations,
+        updateSelectedSpaceCrafts,
+      }}
     >
       {children}
     </GlobalContext.Provider>

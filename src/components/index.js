@@ -1,4 +1,4 @@
 import Header from "./Header";
-import Selection from "./Selection";
+import SingleSelection from "./SingleSelection";
 
-export { Header, Selection };
+export { Header, SingleSelection };
