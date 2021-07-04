@@ -2,10 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../globalContext";
 import { Link } from "react-router-dom";
+import { Loading } from "./";
 
 function Results() {
-  const { falconeFound, planetFound, totalTimeTaken, resetSelections } =
-    useGlobalContext();
+  const {
+    falconeFound,
+    planetFound,
+    totalTimeTaken,
+    resetSelections,
+    isLoading,
+  } = useGlobalContext();
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Wrapper>
       {falconeFound && (
@@ -70,7 +80,8 @@ const Wrapper = styled.div`
   }
   .success,
   .failure {
-    animation: topDown 2s ease-out 1s;
+    transform: translateY(-1000%);
+    animation: topDown 0.5s ease-out 1s forwards;
   }
 `;
 export default Results;

@@ -1,5 +1,5 @@
 import { HomePage, ResultsPage } from "./pages";
-import { Header, Footer } from "./components";
+import { Header, Footer, PageNotFound } from "./components";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -16,6 +16,9 @@ function App() {
             </Route>
             <Route exact path="/results">
               <ResultsPage />
+            </Route>
+            <Route path="/">
+              <PageNotFound />
             </Route>
           </Switch>
         </Wrapper>

@@ -85,8 +85,13 @@ const globalReducer = (state, action) => {
   }
 
   if (action.type === "SET_RESULTS") {
-    console.log("payload", action.payload);
     return { ...state, ...action.payload };
+  }
+  if (action.type === "SET_IS_LOADING") {
+    return { ...state, isLoading: action.payload };
+  }
+  if (action.type === "SET_IS_HELP_MODAL_OPEN") {
+    return { ...state, isHelpModalOpen: action.payload };
   }
   throw new Error("Action type not found.");
 };

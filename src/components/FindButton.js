@@ -11,9 +11,12 @@ function FindButton() {
     selectedSpaceCrafts,
     selectedDestinations,
     setResults,
+    setIsLoading,
   } = useGlobalContext();
+
   const history = useHistory();
 
+  // Fetching token for getting results
   const fetchToken = async (url) => {
     let token = await axios({
       method: "POST",
@@ -25,62 +28,65 @@ function FindButton() {
     return token;
   };
 
-  const fetchResults = async (url) => {
+  //Finding falcone by making post request
+  const findFalcone = async (url) => {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      token = await fetchToken(`${apiEndpoint}/token`);
+    }
+    const data = {
+      token,
+      planet_names: selectedDestinations,
+      vehicle_names: selectedSpaceCrafts.map((a) => a.name),
+    };
+    let results = await axios({
+      method: "POST",
+      url,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data,
+    });
+    results = results.data;
+    setResults(
+      results.status === "success" ? true : false,
+      results.planet_name
+    );
+  };
+
+  // Fetching final result whether falcone found or not
+  const fetchResults = async () => {
     try {
-      let token = localStorage.getItem("token");
-      if (!token) {
-        token = await fetchToken(`${apiEndpoint}/token`);
-      }
-
-      const data = {
-        token,
-        planet_names: selectedDestinations,
-        vehicle_names: selectedSpaceCrafts.map((a) => a.name),
-      };
-
-      let results = await axios({
-        method: "POST",
-        url,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data,
-      });
-
-      //If token is expired
-      if (results.error) {
-        token = await fetchToken(`${apiEndpoint}/token`);
-        results = await axios({
-          method: "POST",
-          url,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          data,
-        });
-      }
-      results = results.data;
-
-      // set results
-      setResults(
-        results.status === "success" ? true : false,
-        results.planet_name
-      );
+      await findFalcone(`${apiEndpoint}/find`);
     } catch (error) {
-      console.log(error);
+      try {
+        // If error response found, fetch token again and fetch results
+        if (error.response.data.error) {
+          localStorage.clear("token");
+          await findFalcone(`${apiEndpoint}/find`);
+        }
+      } catch (error) {
+        console.log("Some Error occured: ", error.response);
+      }
     }
   };
 
+  // Find Falcone button disabled condition
   const disabled =
     selectedSpaceCrafts.length === totalSelectionOptions ? false : true;
+
   return (
     <Wrapper
       disabled={disabled}
-      onClick={() => {
-        fetchResults(`${apiEndpoint}/find`);
+      onClick={async () => {
+        if (disabled) {
+          return;
+        }
         history.push("/results");
+        setIsLoading(true);
+        await fetchResults();
+        setIsLoading(false);
       }}
     >
       <p>Find Falcone!</p>

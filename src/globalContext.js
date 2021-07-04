@@ -5,14 +5,16 @@ const GlobalContext = React.createContext();
 const initialState = {
   allDestinations: [], //all destinations
   allSpaceCrafts: [], // all space crafts
-  totalSelectionOptions: 4,
+  totalSelectionOptions: 4, //Total options
   // Note: space crafts and destinations selected will be mapped based on index
   selectedDestinations: [], // selected destinations to search Al falcone
   selectedSpaceCrafts: [], // selected spacecrafts to search Al falcone
-  availableSpaceCrafts: [],
+  availableSpaceCrafts: [], // Available spacecrafts to select
   totalTimeTaken: 0, //Total time taken to find Al Falcone
-  falconeFound: false,
-  planetFound: "",
+  falconeFound: false, //Falcone found or not
+  planetFound: "", //Found on planet
+  isLoading: false, //loading status
+  isHelpModalOpen: false, //help modal
 };
 
 export const GlobalProvider = ({ children }) => {
@@ -47,6 +49,12 @@ export const GlobalProvider = ({ children }) => {
   const setResults = (falconeFound, planetFound) => {
     dispatch({ type: "SET_RESULTS", payload: { falconeFound, planetFound } });
   };
+  const setIsLoading = (status) => {
+    dispatch({ type: "SET_IS_LOADING", payload: status });
+  };
+  const setIsHelpModalOpen = (status) => {
+    dispatch({ type: "SET_IS_HELP_MODAL_OPEN", payload: status });
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -59,6 +67,8 @@ export const GlobalProvider = ({ children }) => {
         updateAvailableSpaceCrafts,
         calculateTime,
         setResults,
+        setIsLoading,
+        setIsHelpModalOpen,
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useGlobalContext } from "../globalContext";
 import { v4 as uuidv4 } from "uuid";
 
-function SingleSelection({ number /*Number */ }) {
+function SingleSelection({ number }) {
   const {
     allDestinations,
     allSpaceCrafts,
@@ -81,6 +81,9 @@ function SingleSelection({ number /*Number */ }) {
     setIsDestinationSelected(true);
   };
 
+  /*
+  Update selected vehicles and calculate time so far
+  */
   const handleVehicleChange = (e) => {
     setSpaceCraft(e.target.value);
     const newVehicleArr = [...selectedSpaceCrafts];
@@ -161,6 +164,7 @@ const Wrapper = styled.form`
     background: transparent;
     color: #fff;
     font-size: 1rem;
+    cursor: pointer;
   }
   option {
     color: #fff;

@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   padding: 1rem;
   color: #fff;
   min-width: 15rem;
-  max-width: 20rem;
+  max-width: 25rem;
   text-align: center;
   border: 1px solid white;
   p {
