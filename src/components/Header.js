@@ -1,15 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../globalContext";
+import { useLocation, Link } from "react-router-dom";
 
 function Header() {
+  let location = useLocation();
   const { resetSelections } = useGlobalContext();
+
   return (
     <Wrapper>
       <div className="title">Finding Falcone</div>
-      <div className="reset" onClick={resetSelections}>
-        Reset
-      </div>
+      {location.pathname === "/" && (
+        <div className="reset" onClick={resetSelections}>
+          Reset
+        </div>
+      )}
+      {location.pathname !== "/" && (
+        <Link to="/" className="home" onClick={resetSelections}>
+          Home
+        </Link>
+      )}
     </Wrapper>
   );
 }
@@ -25,7 +35,8 @@ const Wrapper = styled.header`
   background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9));
   border-bottom: 1px solid white;
   .title,
-  .reset {
+  .reset,
+  .home {
     font-family: "Press Start 2P";
     color: #fff;
     cursor: pointer;
@@ -37,7 +48,8 @@ const Wrapper = styled.header`
     padding: 1rem;
   }
 
-  .reset {
+  .reset,
+  .home {
     color: #fff;
     font-size: 0.75rem;
   }
@@ -47,7 +59,8 @@ const Wrapper = styled.header`
     .title {
       font-size: 2rem;
     }
-    .reset {
+    .reset,
+    .home {
       font-size: 1rem;
     }
   }

@@ -13,18 +13,21 @@ function HomePage() {
     allDestinations,
     allSpaceCrafts,
     totalSearchTime,
+    resetSelections,
   } = useGlobalContext();
+
+  useEffect(resetSelections, []);
 
   const fetchDetails = async (endpoint) => {
     try {
       // fetch vehicles
       let vehicles = await axios({ url: `${endpoint}/vehicles` });
       setAllSpaceCrafts(vehicles.data);
-      console.table(vehicles.data);
+      // console.table(vehicles.data);
       // fetch planets
       let planets = await axios({ url: `${endpoint}/planets` });
       setAllDestinations(planets.data);
-      console.table(planets.data);
+      // console.table(planets.data);
     } catch (err) {
       console.log(
         `%cSome problem occured while fetching the details...${err}`,
@@ -37,7 +40,6 @@ function HomePage() {
   useEffect(() => fetchDetails(apiEndpoint), []);
   return (
     <Wrapper>
-      <div className="bg-img"></div>
       <div className="selection-container">
         {options.map((element, index) => {
           return <SingleSelection key={index} number={index} />;
@@ -53,20 +55,10 @@ function HomePage() {
 
 const Wrapper = styled.div`
   overflow: auto;
-  .bg-img {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-      center/ cover no-repeat
-        url("https://images.pexels.com/photos/2387793/pexels-photo-2387793.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
-        fixed;
-  }
 
   .selection-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 
   .bottom-container {

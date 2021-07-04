@@ -3,6 +3,8 @@
 /* Global variables */
 :root {
   --transition: all 0.3s ease-out;
+  --dark-shadow: 5px 5px 15px rgba(255, 255, 255, 0.7);
+  --light-shadow: 0px 5px 15px rgba(255, 255, 255, 0.4);
 }
 
 body {
@@ -13,7 +15,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+a {
+  text-decoration: none;
+}
 .main {
   padding-bottom: 4rem;
+}
+
+@keyframes topDown {
+  from {
+    transform: translateY(-1000%);
+  }
+  to {
+    transform: translateY(0%);
+  }
 }

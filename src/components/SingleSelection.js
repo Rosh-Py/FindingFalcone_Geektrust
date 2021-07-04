@@ -132,7 +132,7 @@ function SingleSelection({ number /*Number */ }) {
                     total_no === 0 && name !== spaceCraft ? true : false
                   }
                   id={id}
-                  checked={name === spaceCraft ? true : false}
+                  // checked={name === spaceCraft ? true : false}
                 />
                 {`${name} (${total_no})`}
               </label>
@@ -187,7 +187,7 @@ const Wrapper = styled.form`
     opacity: 0.6;
   }
   .selected {
-    color: green;
+    color: #eeef20;
   }
 `;
 export default SingleSelection;

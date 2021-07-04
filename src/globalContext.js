@@ -11,6 +11,8 @@ const initialState = {
   selectedSpaceCrafts: [], // selected spacecrafts to search Al falcone
   availableSpaceCrafts: [],
   totalTimeTaken: 0, //Total time taken to find Al Falcone
+  falconeFound: false,
+  planetFound: "",
 };
 
 export const GlobalProvider = ({ children }) => {
@@ -41,6 +43,10 @@ export const GlobalProvider = ({ children }) => {
   const calculateTime = () => {
     dispatch({ type: "CALCULATE_TIME" });
   };
+
+  const setResults = (falconeFound, planetFound) => {
+    dispatch({ type: "SET_RESULTS", payload: { falconeFound, planetFound } });
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -52,6 +58,7 @@ export const GlobalProvider = ({ children }) => {
         resetSelections,
         updateAvailableSpaceCrafts,
         calculateTime,
+        setResults,
       }}
     >
       {children}

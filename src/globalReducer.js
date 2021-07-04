@@ -28,20 +28,22 @@ const globalReducer = (state, action) => {
   if (action.type === "UPDATE_AVAILABLE_SPACECRAFTS") {
     let availableSpaceCrafts = state.allSpaceCrafts.map((s) => ({ ...s }));
     const selectedSpaceCrafts = state.selectedSpaceCrafts;
-    console.log("selectedSpaceCrafts", selectedSpaceCrafts);
+    // console.log("selectedSpaceCrafts", selectedSpaceCrafts);
 
     selectedSpaceCrafts.forEach((sc) => {
       // console.log("sc", sc);
       // console.log("availableSpaceCrafts", availableSpaceCrafts);
-      const vehicle = availableSpaceCrafts.find((v) => v.name === sc.name);
-      // console.log("vehicle", vehicle);
-      vehicle.total_no -= 1;
+      if (sc) {
+        const vehicle = availableSpaceCrafts.find((v) => v.name === sc.name);
+        // console.log("vehicle", vehicle);
+        vehicle.total_no -= 1;
+      }
     });
-    console.log(
-      "UPDATE_AVAILABLE_SPACECRAFTS",
-      selectedSpaceCrafts,
-      availableSpaceCrafts
-    );
+    // console.log(
+    //   "UPDATE_AVAILABLE_SPACECRAFTS",
+    //   selectedSpaceCrafts,
+    //   availableSpaceCrafts
+    // );
     return {
       ...state,
       availableSpaceCrafts,
@@ -55,22 +57,36 @@ const globalReducer = (state, action) => {
       selectedDestinations: [],
       availableSpaceCrafts: [...state.allSpaceCrafts],
       totalTimeTaken: 0,
+      falconeFound: false,
+      planetFound: "",
     };
   }
   if (action.type === "CALCULATE_TIME") {
-    const destinations = state.allDestinations.filter((d) =>
-      state.selectedDestinations.includes(d.name)
+    // const destinations = state.allDestinations.filter((d) =>
+    //   state.selectedDestinations.includes(d.name)
+    // );
+    const destinations = state.selectedDestinations.map((d) =>
+      state.allDestinations.find((a) => a.name === d)
     );
+
+    // console.log("CALCULATE_TIME sd", state.selectedDestinations);
     // console.log("CALCULATE_TIME d", destinations);
     const vehicles = state.selectedSpaceCrafts;
     let totalTimeTaken = 0;
     // console.log("CALCULATE_TIME v", vehicles);
 
     vehicles.forEach((v, index) => {
-      totalTimeTaken += destinations[index].distance / v.speed;
+      if (v) {
+        totalTimeTaken += destinations[index].distance / v.speed;
+      }
     });
-    console.log(totalTimeTaken);
+    // console.log(totalTimeTaken);
     return { ...state, totalTimeTaken };
+  }
+
+  if (action.type === "SET_RESULTS") {
+    console.log("payload", action.payload);
+    return { ...state, ...action.payload };
   }
   throw new Error("Action type not found.");
 };
