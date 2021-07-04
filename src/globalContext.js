@@ -9,6 +9,7 @@ const initialState = {
   // Note: space crafts and destinations selected will be mapped based on index
   selectedDestinations: [], // selected destinations to search Al falcone
   selectedSpaceCrafts: [], // selected spacecrafts to search Al falcone
+  availableSpaceCrafts: [],
   totalSearchTime: 0, //Total time taken to find Al Falcone
 };
 
@@ -33,6 +34,13 @@ export const GlobalProvider = ({ children }) => {
   const resetSelections = () => {
     dispatch({ type: "RESET_SELECTIONS" });
   };
+
+  const updateAvailableSpaceCrafts = () => {
+    dispatch({ type: "UPDATE_AVAILABLE_SPACECRAFTS" });
+  };
+  const calculateTime = () => {
+    dispatch({ type: "CALCULATE_TIME" });
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -42,6 +50,8 @@ export const GlobalProvider = ({ children }) => {
         updateSelectedDestinations,
         updateSelectedSpaceCrafts,
         resetSelections,
+        updateAvailableSpaceCrafts,
+        calculateTime,
       }}
     >
       {children}

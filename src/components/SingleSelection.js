@@ -11,16 +11,24 @@ function SingleSelection({ number /*Number */ }) {
     selectedSpaceCrafts,
     updateSelectedDestinations,
     updateSelectedSpaceCrafts,
+    availableSpaceCrafts,
+    updateAvailableSpaceCrafts,
+    calculateTime,
   } = useGlobalContext();
 
-  const copy = allDestinations
+  const copyDestinations = allDestinations
     .filter((d) => !selectedDestinations.includes(d.name))
     .map(({ name }) => name);
+
+  const copySpaceCrafts = availableSpaceCrafts.map((a) => ({ ...a }));
 
   const [destination, setDestination] = useState("Select");
   const [isDestinationSelected, setIsDestinationSelected] = useState(false);
   const [spaceCraft, setSpaceCraft] = useState("");
-  const [availableDestinations, setAvailableDestinations] = useState(copy);
+  const [availableDestinations, setAvailableDestinations] =
+    useState(copyDestinations);
+  const [localAvailableSpaceCrafts, setLocalAvailableSpaceCrafts] =
+    useState(copySpaceCrafts);
 
   /*
   Updating the dropdown option dynamically
@@ -45,9 +53,14 @@ function SingleSelection({ number /*Number */ }) {
   }, [selectedDestinations, allDestinations, number]);
 
   /*
+  Update Local Available vehicles
+  */
+  //  useEffect(,[availableSpaceCrafts])
+
+  /*
   Update selected destinations so far
   */
-  const handleChange = (e, number) => {
+  const handleDestinationChange = (e) => {
     setDestination(e.target.value);
     const newDestArr = [...selectedDestinations];
     newDestArr[number] = e.target.value;
@@ -55,11 +68,23 @@ function SingleSelection({ number /*Number */ }) {
     setIsDestinationSelected(true);
   };
 
+  const handleVehicleChange = (e) => {
+    setSpaceCraft(e.target.value);
+    const newVehicleArr = [...selectedSpaceCrafts];
+    const speed = allSpaceCrafts.find((sc) => sc.name === e.target.value).speed;
+    newVehicleArr[number] = { name: e.target.value, speed };
+    updateSelectedSpaceCrafts(newVehicleArr);
+    calculateTime();
+    updateAvailableSpaceCrafts();
+  };
   return (
     <Wrapper>
       <div className="destinations">
         <h5>Destination {number + 1}</h5>
-        <select value={destination} onChange={(e) => handleChange(e, number)}>
+        <select
+          value={destination}
+          onChange={(e) => handleDestinationChange(e)}
+        >
           <option value="Select" default disabled hidden>
             Select
           </option>
@@ -72,18 +97,23 @@ function SingleSelection({ number /*Number */ }) {
         </select>
       </div>
       <div className={`vehicles ${!isDestinationSelected ? "hide" : ""}`}>
-        {allSpaceCrafts.map(({ name, total_no }) => {
-          const id = uuidv4();
-          return (
-            <div
-              className="radio-input"
-              onChange={(e) => setSpaceCraft(e.target.value)}
-            >
-              <input type="radio" name="vehicle" value={name} id={id} />
-              <label htmlFor={id}>{`${name} (${total_no})`}</label>
-            </div>
-          );
-        })}
+        <div className="radio-input" onChange={(e) => handleVehicleChange(e)}>
+          {availableSpaceCrafts.map(({ name, total_no }) => {
+            const id = uuidv4();
+            return (
+              <label htmlFor={id}>
+                <input
+                  type="radio"
+                  name={`vehicle${number}`}
+                  value={name}
+                  // disabled={total_no === 0 ? true : false}
+                  id={id}
+                />
+                {`${name} (${total_no})`}
+              </label>
+            );
+          })}
+        </div>
       </div>
     </Wrapper>
   );
@@ -122,7 +152,11 @@ const Wrapper = styled.form`
     padding: 1rem;
   }
   .radio-input {
+    display: grid;
+  }
+  .radio-input label {
     padding: 0.3rem;
+    cursor: pointer;
   }
 `;
 export default SingleSelection;
