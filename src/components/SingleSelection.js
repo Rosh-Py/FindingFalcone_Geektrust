@@ -23,6 +23,7 @@ function SingleSelection({ number /*Number */ }) {
   const copySpaceCrafts = availableSpaceCrafts.map((a) => ({ ...a }));
 
   const [destination, setDestination] = useState("Select");
+  const [distance, setDistance] = useState(0);
   const [isDestinationSelected, setIsDestinationSelected] = useState(false);
   const [spaceCraft, setSpaceCraft] = useState("");
   const [availableDestinations, setAvailableDestinations] =
@@ -41,6 +42,8 @@ function SingleSelection({ number /*Number */ }) {
     // Reset case starts
     if (destination !== "Select" && selectedDestinations.length === 0) {
       setDestination("Select");
+      setSpaceCraft("");
+      setDistance(0);
       setIsDestinationSelected(false);
     }
     // Reset case ends
@@ -55,13 +58,23 @@ function SingleSelection({ number /*Number */ }) {
   /*
   Update Local Available vehicles
   */
-  //  useEffect(,[availableSpaceCrafts])
+  useEffect(() => {
+    const newVehicleArr = availableSpaceCrafts.map((a) => ({ ...a }));
+    setLocalAvailableSpaceCrafts(newVehicleArr);
+  }, [availableSpaceCrafts]);
 
   /*
   Update selected destinations so far
   */
   const handleDestinationChange = (e) => {
     setDestination(e.target.value);
+    // find distance
+    const distance = allDestinations.find(
+      (d) => d.name === e.target.value
+    ).distance;
+    setDistance(distance);
+
+    // Updating selected destinations
     const newDestArr = [...selectedDestinations];
     newDestArr[number] = e.target.value;
     updateSelectedDestinations(newDestArr);
@@ -98,16 +111,28 @@ function SingleSelection({ number /*Number */ }) {
       </div>
       <div className={`vehicles ${!isDestinationSelected ? "hide" : ""}`}>
         <div className="radio-input" onChange={(e) => handleVehicleChange(e)}>
-          {availableSpaceCrafts.map(({ name, total_no }) => {
+          {localAvailableSpaceCrafts.map(({ name, total_no, max_distance }) => {
             const id = uuidv4();
             return (
-              <label htmlFor={id}>
+              <label
+                htmlFor={id}
+                key={uuidv4()}
+                className={`${
+                  (total_no === 0 && name !== spaceCraft) ||
+                  distance > max_distance
+                    ? "disabled"
+                    : ""
+                } ${name === spaceCraft ? "selected" : ""}`}
+              >
                 <input
                   type="radio"
                   name={`vehicle${number}`}
                   value={name}
-                  // disabled={total_no === 0 ? true : false}
+                  disabled={
+                    total_no === 0 && name !== spaceCraft ? true : false
+                  }
                   id={id}
+                  checked={name === spaceCraft ? true : false}
                 />
                 {`${name} (${total_no})`}
               </label>
@@ -157,6 +182,12 @@ const Wrapper = styled.form`
   .radio-input label {
     padding: 0.3rem;
     cursor: pointer;
+  }
+  .disabled {
+    opacity: 0.6;
+  }
+  .selected {
+    color: green;
   }
 `;
 export default SingleSelection;

@@ -21,7 +21,9 @@ const Wrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  z-index: 1;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9));
+  border-bottom: 1px solid white;
   .title,
   .reset {
     font-family: "Press Start 2P";

@@ -10,7 +10,7 @@ const initialState = {
   selectedDestinations: [], // selected destinations to search Al falcone
   selectedSpaceCrafts: [], // selected spacecrafts to search Al falcone
   availableSpaceCrafts: [],
-  totalSearchTime: 0, //Total time taken to find Al Falcone
+  totalTimeTaken: 0, //Total time taken to find Al Falcone
 };
 
 export const GlobalProvider = ({ children }) => {

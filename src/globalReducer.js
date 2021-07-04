@@ -48,12 +48,13 @@ const globalReducer = (state, action) => {
     };
   }
   if (action.type === "RESET_SELECTIONS") {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     return {
       ...state,
       selectedSpaceCrafts: [],
       selectedDestinations: [],
       availableSpaceCrafts: [...state.allSpaceCrafts],
-      selectedSpaceCrafts: [],
+      totalTimeTaken: 0,
     };
   }
   if (action.type === "CALCULATE_TIME") {
