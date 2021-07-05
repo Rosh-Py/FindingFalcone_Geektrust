@@ -74,7 +74,9 @@ function FindButton() {
 
   // Find Falcone button disabled condition
   const disabled =
-    selectedSpaceCrafts.length === totalSelectionOptions ? false : true;
+    selectedSpaceCrafts.filter((sc) => sc).length === totalSelectionOptions
+      ? false
+      : true;
 
   return (
     <Wrapper
