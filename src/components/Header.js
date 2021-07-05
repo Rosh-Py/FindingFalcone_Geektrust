@@ -44,14 +44,14 @@ const Wrapper = styled.header`
   }
 
   .title {
-    font-size: 1rem;
+    font-size: 0.75rem;
     padding: 1rem;
   }
 
   .reset,
   .home {
     color: #fff;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
   }
 
   @media (min-width: 768px) {

@@ -103,7 +103,7 @@ const Wrapper = styled.div`
     transform: translate(2px, 2px);
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 520px) {
     .bottom-container {
       grid-template-columns: 1fr 1fr;
       column-gap: 1rem;

@@ -80,7 +80,7 @@ const Wrapper = styled.div`
   }
   .success,
   .failure {
-    transform: translateY(-1000%);
+    transform: translateY(-200%);
     animation: topDown 0.5s ease-out 1s forwards;
   }
 `;
