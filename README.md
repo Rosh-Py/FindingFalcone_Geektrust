@@ -8,7 +8,7 @@
 
 ## Live Url
 
-[Live App](rosh-finding-falcone.netlify.app)
+[Live App](https://rosh-finding-falcone.netlify.app/)
 
 ### Extra info
 ```
