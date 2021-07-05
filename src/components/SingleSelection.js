@@ -116,24 +116,23 @@ function SingleSelection({ number }) {
         <div className="radio-input" onChange={(e) => handleVehicleChange(e)}>
           {localAvailableSpaceCrafts.map(({ name, total_no, max_distance }) => {
             const id = uuidv4();
+            // Disabled condition for options
+            const disabled =
+              (total_no === 0 && name !== spaceCraft) ||
+              distance > max_distance;
             return (
               <label
                 htmlFor={id}
                 key={uuidv4()}
-                className={`${
-                  (total_no === 0 && name !== spaceCraft) ||
-                  distance > max_distance
-                    ? "disabled"
-                    : ""
-                } ${name === spaceCraft ? "selected" : ""}`}
+                className={`${disabled ? "disabled" : ""} ${
+                  name === spaceCraft ? "selected" : ""
+                }`}
               >
                 <input
                   type="radio"
                   name={`vehicle${number}`}
                   value={name}
-                  disabled={
-                    total_no === 0 && name !== spaceCraft ? true : false
-                  }
+                  disabled={disabled ? true : false}
                   id={id}
                   // checked={name === spaceCraft ? true : false}
                 />
