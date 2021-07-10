@@ -30,7 +30,6 @@ function SingleSelection({ number }) {
     useState(copyDestinations);
   const [localAvailableSpaceCrafts, setLocalAvailableSpaceCrafts] =
     useState(copySpaceCrafts);
-
   /*
   Updating the dropdown option dynamically
   */
@@ -79,16 +78,32 @@ function SingleSelection({ number }) {
     newDestArr[number] = e.target.value;
     updateSelectedDestinations(newDestArr);
     setIsDestinationSelected(true);
+
+    // Checking if previous selected vehicle should be enabled or disabled
+    if (spaceCraft) {
+      let selectedVehicleMaxDistance;
+      selectedVehicleMaxDistance = availableSpaceCrafts.find(
+        (sc) => sc.name === spaceCraft
+      ).max_distance;
+
+      if (distance > selectedVehicleMaxDistance) {
+        handleVehicleChange("");
+      }
+    }
   };
 
   /*
   Update selected vehicles and calculate time so far
   */
-  const handleVehicleChange = (e) => {
-    setSpaceCraft(e.target.value);
+  const handleVehicleChange = (value) => {
+    setSpaceCraft(value);
     const newVehicleArr = [...selectedSpaceCrafts];
-    const speed = allSpaceCrafts.find((sc) => sc.name === e.target.value).speed;
-    newVehicleArr[number] = { name: e.target.value, speed };
+    if (value) {
+      const speed = allSpaceCrafts.find((sc) => sc.name === value).speed;
+      newVehicleArr[number] = { name: value, speed };
+    } else {
+      newVehicleArr[number] = undefined;
+    }
     updateSelectedSpaceCrafts(newVehicleArr);
     calculateTime();
     updateAvailableSpaceCrafts();
@@ -113,7 +128,10 @@ function SingleSelection({ number }) {
         </select>
       </div>
       <div className={`vehicles ${!isDestinationSelected ? "hide" : ""}`}>
-        <div className="radio-input" onChange={(e) => handleVehicleChange(e)}>
+        <div
+          className="radio-input"
+          onChange={(e) => handleVehicleChange(e.target.value)}
+        >
           {localAvailableSpaceCrafts.map(({ name, total_no, max_distance }) => {
             const id = uuidv4();
             // Disabled condition for options
